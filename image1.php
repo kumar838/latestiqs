@@ -50,3 +50,5 @@
 </html>
 
 https://sdk.ckeditor.com/samples/image2.html
+
+https://github.com/xsmo/Image-Uploader-and-Browser-for-CKEditor
