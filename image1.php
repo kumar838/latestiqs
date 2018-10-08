@@ -15,7 +15,7 @@
 
 	<script>
 		CKEDITOR.replace( 'editor1', {
-			extraPlugins: 'image2,uploadimage',
+			extraPlugins: 'image2,uploadimage ,imageuploader',
 
 			toolbar: [
 				{ name: 'clipboard', items: [ 'Undo', 'Redo' ] },
