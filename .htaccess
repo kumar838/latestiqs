@@ -11,5 +11,4 @@ RewriteRule ^([a-zA-Z0-9_-]+)/([0-9]+)$ users.php?user=$1&page=$2
 RewriteRule ^([a-zA-Z0-9_-]+)/([0-9]+)/$ users.php?user=$1&page=$2
 
 
-
 https://www.9lessons.info/2009/01/htaccess-tutorials.html
