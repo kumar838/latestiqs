@@ -1,7 +1,9 @@
 <?php
 include("config.php");
 include('fckeditor/fckeditor.php');
-if(!empty($_POST["register-user"])) {
+
+$id=$_GET['id'];
+if(!empty($_POST["update-post"])) {
 	/* Form Required Field Validation */
 	foreach($_POST as $key=>$value) {
 		if(empty($_POST[$key])) {
@@ -11,13 +13,13 @@ if(!empty($_POST["register-user"])) {
 	}
 	
 	/* Validation to check if Terms and Conditions are accepted */
-
-
 	if(!isset($error_message)) {
 		include("dbcontroller.php");
 		$db_handle = new DBController();
-		$query = "INSERT INTO qa_list (title, answer, category, qtype) VALUES
-		('" . $_POST["question"] . "', '" . $_POST["answer"] . "', '" . $_POST["category"] . "','" . $_POST["type"] . "')";
+		// $query = "INSERT INTO qa_list (title, answer, category, qtype) VALUES
+		// ('" . $_POST["question"] . "', '" . $_POST["answer"] . "', '" . $_POST["category"] . "','" . $_POST["type"] . "')";
+		$query = "UPDATE qa_list SET title='" . $_POST["title"] . "', answer='" . $_POST["answer"] . "',category='" . $_POST["category"] . "',qtype='" . $_POST["question"] . "' WHERE id='$id'";
+		
 		$result = $db_handle->insertQuery($query);
 		if(!empty($result)) {
 			$error_message = "";
@@ -29,11 +31,19 @@ if(!empty($_POST["register-user"])) {
 	}
 }
 
+
+if($id > 0) {
+    $res =  mysqli_query($conn,"SELECT id,title,answer,category,qtype from qa_list where id='$id'") or die(mysql_error());
+    $row= mysqli_fetch_array($res);
+}
+
+
 $sBasePath = 'fckeditor/';
 $oFCKeditor = new FCKeditor('answer') ;
 $oFCKeditor->Height = "400px";
 $oFCKeditor->Width = "800px";
 $oFCKeditor->BasePath = $sBasePath;
+$answer=<?php echo $row['answer']; ?>
 if($answer!='') $oFCKeditor->Value = $answer; else $oFCKeditor->Value = '';
 ?>
 <html>
@@ -79,13 +89,10 @@ body{
 	border: #a9a9a9 1px solid;
 	border-radius: 4px;
 }
-
-
 .form-control {
 padding-right: 613px;
 padding-bottom:10px;
 }
-
 .btnRegister {
 	padding: 10px 30px;
 	background-color: #3367b2;
@@ -101,7 +108,7 @@ padding-bottom:10px;
 </head>
 <body>
     <h3>Edit post</h3>
-<form name="frmRegistration" method="post" action="">
+<form name="frmupdate" method="post" action="">
 <table border="0" width="100%" align="center" class="demo-table">
 <?php if(!empty($success_message)) { ?>	
 <div class="success-message"><?php if(isset($success_message)) echo $success_message; ?></div>
@@ -111,7 +118,7 @@ padding-bottom:10px;
 <?php } ?>
 <tr>
 <td>Title</td>
-<td class="form-group"><input type="text" class="form-control" name="question" value="<?php if(isset($_POST['question'])) echo $_POST['question']; ?>"></td>
+<td class="form-group"><input type="text" class="form-control" name="title" value=<?php echo $row['title']; ?>></td>
 </tr>
 <tr>
 <td>Questions And Answers</td>
@@ -127,9 +134,9 @@ padding-bottom:10px;
 include("config.php");
 $sql = mysqli_query($conn,"select cat_name from categories");
 //print_r($sql);exit;
-$row = mysqli_num_rows($sql);
+$row1 = mysqli_num_rows($sql);
 while ($row = mysqli_fetch_array($sql)){
-echo "<option value='". $row['cat_name'] ."'>" .$row['cat_name'] ."</option>" ;
+echo "<option value='". $row1['cat_name'] ."'>" .$row1['cat_name'] ."</option>" ;
 }
 ?>
 </select>
@@ -151,7 +158,7 @@ echo "<option value='". $row['cat_name'] ."'>" .$row['cat_name'] ."</option>" ;
 
 <tr>
 <td colspan=2>
- <input type="submit" name="register-user" value="Register" class="btnRegister"></td>
+ <input type="submit" name="update-post" value="Update" class="btnRegister"></td>
 </tr>
 </table>
 </form>
